@@ -19,16 +19,16 @@ export class AlumnosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.alumnosService.findOne(+id);
+    return this.alumnosService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAlumnoDto: UpdateAlumnoDto) {
-    return this.alumnosService.update(+id, updateAlumnoDto);
+    return this.alumnosService.update(id, updateAlumnoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.alumnosService.remove(+id);
+    return this.alumnosService.remove(id);
   }
 }

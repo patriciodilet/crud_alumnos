@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlumnoDto } from './dto/create-alumno.dto';
 import { UpdateAlumnoDto } from './dto/update-alumno.dto';
+import { AlumnosRepository } from './alumnos.repository';
+import { Alumno } from './entities/alumno.entity';
 
 @Injectable()
 export class AlumnosService {
+  constructor(private readonly repository: AlumnosRepository) {}
+
   create(createAlumnoDto: CreateAlumnoDto) {
-    return 'This action adds a new alumno';
+    return this.repository.upsertOne(Alumno.newInstanceFromDTO(createAlumnoDto));
   }
 
   findAll() {
-    return `This action returns all alumnos`;
+    return this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} alumno`;
+  findOne(id: string) {
+    return this.repository.findByAlumnoId(id);
   }
 
-  update(id: number, updateAlumnoDto: UpdateAlumnoDto) {
-    return `This action updates a #${id} alumno`;
+  update(id: string, updateAlumnoDto: UpdateAlumnoDto) {
+    const existingObject = new Alumno();
+
+    if (updateAlumnoDto.nombre) {
+      existingObject.nombre = updateAlumnoDto.nombre;
+    }
+
+    existingObject.alumnoId = id
+
+    return this.repository.upsertOne(existingObject);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} alumno`;
+  remove(id: string) {
+    return this.repository.deleteById(id);
   }
 }
