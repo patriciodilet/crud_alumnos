@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AlumnosService } from './alumnos.service';
 import { CreateAlumnoDto } from './dto/create-alumno.dto';
 import { UpdateAlumnoDto } from './dto/update-alumno.dto';
@@ -8,6 +8,7 @@ export class AlumnosController {
   constructor(private readonly alumnosService: AlumnosService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createAlumnoDto: CreateAlumnoDto) {
     return this.alumnosService.create(createAlumnoDto);
   }
